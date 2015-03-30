@@ -31,9 +31,9 @@ function handleText(textNode)
 {
 	var v = textNode.nodeValue;
 
-	v = v.replace(/\bCyber\b/g, "Wizard");
-	v = v.replace(/\bcyber\b/g, "wizard");
-	v = v.replace(/\bCYBER\b/g, "WIZARD");
+	v = v.replace(/\bCyber/g, "Wizard");
+	v = v.replace(/\bcyber/g, "wizard");
+	v = v.replace(/\bCYBER/g, "WIZARD");
 	
 	textNode.nodeValue = v;
 }
