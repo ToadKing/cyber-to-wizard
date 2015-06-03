@@ -78,7 +78,7 @@ function cyberToWizard(text) {
 function handleText(textNode) {
 	var val = textNode.nodeValue;
 
-	if (/\bcyber/gi.test(val)) {
+	if (/\bcyber/i.test(val)) {
 		textNode.nodeValue = cyberToWizard(val);
 	}
 }
@@ -86,7 +86,7 @@ function handleText(textNode) {
 function handleTitle(node) {
 	var val = node.title;
 
-	if (/\bcyber/gi.test(val)) {
+	if (/\bcyber/i.test(val)) {
 		node.title = cyberToWizard(val);
 	}
 }
