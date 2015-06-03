@@ -8,38 +8,36 @@
 // ==/UserScript==
 
 var target = document.documentElement;
-var config = { childList: true, characterData: true, subtree: true };
+var config = { childList: true, characterData: true, subtree: true, attributes: true };
 
 var observer = new MutationObserver(function(mutations) {
-  mutations.forEach(function(mutation) {
+	mutations.forEach(function(mutation) {
 		observer.disconnect()
-    walk(mutation.target);
+		walk(mutation.target);
 		observer.observe(target, config);
-  });
+	});
 });
 
 walk(target);
 
 observer.observe(target, config);
 
-function walk(node)
-{
+function walk(node) {
 	// I stole this function from here:
 	// http://is.gd/mwZp7E
 
 	var child, next;
 
-	switch ( node.nodeType )
-	{
+	switch (node.nodeType) {
 		case 1:  // Element
 		case 9:  // Document
 		case 11: // Document fragment\
-			if (node.title)
+			if (node.title) {
 				handleTitle(node);
+			}
 
 			child = node.firstChild;
-			while ( child )
-			{
+			while (child) {
 				next = child.nextSibling;
 				walk(child);
 				child = next;
@@ -52,8 +50,7 @@ function walk(node)
 	}
 }
 
-function cyberToWizard(text)
-{
+function cyberToWizard(text) {
 	var w = text;
 
 	w = w.replace(/\bCyber/g, "Wizard");
@@ -63,12 +60,10 @@ function cyberToWizard(text)
 	return w;
 }
 
-function handleText(textNode)
-{
+function handleText(textNode) {
 	textNode.nodeValue = cyberToWizard(textNode.nodeValue);
 }
 
-function handleTitle(node)
-{
+function handleTitle(node) {
 	node.title = cyberToWizard(node.title);
 }
