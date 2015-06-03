@@ -10,12 +10,23 @@
 var target = document.documentElement;
 var config = { childList: true, characterData: true, subtree: true, attributes: true };
 
+function dontParse(node) {
+	return node.nodeName.toUpperCase() === "TEXTAREA" || node.contentEditable === "true";
+}
+
 var observer = new MutationObserver(function(mutations) {
+	observer.disconnect();
 	mutations.forEach(function(mutation) {
-		observer.disconnect()
+		var parent = mutation.target;
+		while (parent != null) {
+			if (dontParse(parent)) {
+				return;
+			}
+			parent = parent.parentElement;
+		}
 		walk(mutation.target);
-		observer.observe(target, config);
 	});
+	observer.observe(target, config);
 });
 
 walk(target);
@@ -34,6 +45,10 @@ function walk(node) {
 		case 11: // Document fragment\
 			if (node.title) {
 				handleTitle(node);
+			}
+
+			if (dontParse(node)) {
+				return;
 			}
 
 			child = node.firstChild;
@@ -61,9 +76,17 @@ function cyberToWizard(text) {
 }
 
 function handleText(textNode) {
-	textNode.nodeValue = cyberToWizard(textNode.nodeValue);
+	var val = textNode.nodeValue;
+
+	if (/\bcyber/gi.test(val)) {
+		textNode.nodeValue = cyberToWizard(val);
+	}
 }
 
 function handleTitle(node) {
-	node.title = cyberToWizard(node.title);
+	var val = node.title;
+
+	if (/\bcyber/gi.test(val)) {
+		node.title = cyberToWizard(val);
+	}
 }
