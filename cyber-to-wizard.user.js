@@ -3,7 +3,7 @@
 // @namespace   com.cyber-to-wizard
 // @description Replace all instances of "cyber" with "wizard"
 // @include     *
-// @version     1.0
+// @version     1.1
 // @grant       none
 // ==/UserScript==
 
@@ -16,17 +16,19 @@ function dontParse(node) {
 
 var observer = new MutationObserver(function(mutations) {
 	observer.disconnect();
-	mutations.forEach(function(mutation) {
-		var parent = mutation.target;
-		while (parent != null) {
-			if (dontParse(parent)) {
-				return;
+	setTimeout(function() {
+		mutations.forEach(function(mutation) {
+			var parent = mutation.target;
+			while (parent != null) {
+				if (dontParse(parent)) {
+					return;
+				}
+				parent = parent.parentElement;
 			}
-			parent = parent.parentElement;
-		}
-		walk(mutation.target);
-	});
-	observer.observe(target, config);
+			walk(mutation.target);
+		});
+		observer.observe(target, config);
+	}, 100);
 });
 
 walk(target);
